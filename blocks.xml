@@ -87,7 +87,7 @@
 	<block	tag="append-line"
 		spec="append line %1 to file: %0"
 		code="DataUtils.appendLine(~, ~);"
-		help="DOES NOT WORK ON FLASH. // Adds a line of text to the end of the file. Useful for generating logs."
+		help="DOES NOT WORK ON FLASH OR HTML5. // Adds a line of text to the end of the file. Useful for generating logs."
 		type="action"
 		color="red"
 		returns="void">
@@ -232,7 +232,7 @@
 	<block	tag="save-text-data"
 		spec="save data %1 to file: %0 [e:dash] %3"
 		code="FileSave.saveText(~, ~, function(success:Bool) {~});"
-		help="DOES NOT WORK ON FLASH. // Saves a text file to the game's 'extras' folder."
+		help="DOES NOT WORK ON FLASH OR HTML5. // Saves a text file to the game's 'extras' folder."
 		type="wrapper"
 		color="red"
 		returns="void">
@@ -247,15 +247,37 @@
 	<block	tag="save-image-data"
 		spec="save PNG %1 to file: %0 [e:dash] %3"
 		code="FileSave.savePNG(~, ~, function(success:Bool) {~});"
-		help="DOES NOT WORK ON FLASH. // Saves an image file as a .png to the game's 'extras' folder."
+		help="DOES NOT WORK ON FLASH OR HTML5. // Saves an image file as a .png to the game's 'extras' folder."
 		type="wrapper"
 		color="cyan"
+		hidden="true"
 		returns="void">
 		<fields>
 			<text order="0"/>
 			<image order="1"/>
 			<CODE_BLOCK order="2"/>
 			<attached-block order="3" tag="data-save-success-cyan"/>
+		</fields>
+	</block>
+	
+	<block	tag="save-image-png-jpg"
+		spec="save %0 %2 to file: %1 [e:dash] %4"
+		code="FileSave.save~(~, ~, function(success:Bool) {~});"
+		help="DOES NOT WORK ON FLASH OR HTML5. // Saves an image file to the game's 'extras' folder."
+		type="wrapper"
+		color="cyan"
+		returns="void">
+		<fields>
+			<dropdown order="0">
+				<choices>
+					<c text="PNG" code="PNG"/>
+					<c text="JPEG" code="JPG"/>
+				</choices>
+			</dropdown>
+			<text order="1"/>
+			<image order="2"/>
+			<CODE_BLOCK order="3"/>
+			<attached-block order="4" tag="data-save-success-cyan"/>
 		</fields>
 	</block>
 </palette>

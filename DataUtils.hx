@@ -40,7 +40,7 @@ class DataUtils {
 			file = file.substr(1);						// remove leading slashes
 		var n:Int = file.lastIndexOf("/");
 		if (n == -1)
-			return ["", file];
+			return [".", file];
 		else
 			return [file.substr(0,n), file.substr(n+1)];
 	}

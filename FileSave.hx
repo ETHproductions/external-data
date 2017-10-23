@@ -7,10 +7,15 @@ import com.stencyl.utils.Utils;
 
 import nme.display.BitmapData;
 import nme.utils.ByteArray;
-import nme.utils.SystemPath;
+import lime.system.System in SystemPath;
+import haxe.io.Bytes;
+import openfl.geom.Rectangle;
+import openfl.display.*;
 
+#if !flash
 import sys.*;
 import sys.io.*;
+#end
 
 class FileSave {
 
@@ -65,7 +70,7 @@ class FileSave {
 		#elseif mobile
 		path2 = SystemPath.userDirectory + "/" + path;
 		if (FileSystem.exists(path2)) {
-			image = BitmapData.loadFromHaxeBytes(File.getBytes(path2));
+			image = BitmapData.fromBytes(File.getBytes(path2));
 		} else {
 			image = nme.Assets.getBitmapData(path);
 		}
@@ -78,7 +83,7 @@ class FileSave {
 		#else
 		path2 = FileSystem.fullPath(path);
 		if (FileSystem.exists(path2)) {
-			image = BitmapData.loadFromHaxeBytes(File.getBytes(path2));
+			image = BitmapData.fromBytes(File.getBytes(path2));
 		} else {
 			trace("ERROR: File does not exist at: " + path2);
 		}
@@ -114,7 +119,7 @@ class FileSave {
 		
 		path2 = SystemPath.userDirectory + "/" + a[0] + "/" + a[1];
 		try {
-			File.saveContent(path2, content);
+			File.saveContent(path2, Std.string(content));
 		} catch (e:Dynamic) {
 			success = false;
 			trace("ERROR: " + e);
@@ -129,7 +134,7 @@ class FileSave {
 		
 		path2 = FileSystem.fullPath(a[0] + "/" + a[1]);
 		try {
-			File.saveContent(path2, content);
+			File.saveContent(path2, Std.string(content));
 		} catch (e:Dynamic) {
 			success = false;
 			trace("ERROR: " + e);
@@ -141,26 +146,109 @@ class FileSave {
 			whenDone(success);
 	}
 	
-	// Uses trick from http://stackoverflow.com/questions/22630008/save-bitmapdata-bytearray-as-a-png-file
-	
-	public static function savePNG(path:String, image:BitmapData, ?whenDone:Bool->Void):Void {
-		if (path.substr(path.length - 4).toLowerCase() != ".png") { path += ".png"; }
+	/**
+	 * Save bytes as a file
+	 * @param	path	
+	 * @param	content	
+	 * @return true if succeed, false overwise
+	 */
+	static function saveBytes(path:String, content:Bytes):Bool {
+		var success = true;
 		
-		// Flash: Not possible to save; error out
-		#if (flash || js)
+		// Flash or HTML5: This should not happen; error out
 		#if flash
 		trace("ERROR: File IO cannot be accessed on Flash.");
-		#else
+		success = false;
+		#elseif js
 		trace("ERROR: File IO cannot be accessed on HTML5.");
-		#end
-		if (whenDone != null)
-			whenDone(false);
+		success = false;
 		
-		// Windows, Mac, Linux, iOS, and Android: Use the "saveText" function with the converted file
 		#else
-		var b:ByteArray = image.encode("png", 1);
-		saveText(path, b.toString(), whenDone);
+		var fo:FileOutput = null;
+		try {
+			//open binary file and write bytes
+			fo = File.write(path, true);
+			fo.writeBytes(content, 0, content.length);
+		} catch (e:Dynamic) {
+		    success = false;
+			trace("ERROR: " + e);
+			errorify(e);
+		}
+		
+		//file output should be closed in any case
+		try {
+			if (fo != null) 
+				fo.close();
+		} catch (e:Dynamic) {
+			success = false;
+			trace("ERROR: " + e);
+			errorify(e);
+		}
 		#end
+		
+		return success;
+	}
+	
+	public static function saveImage(path:String, type:String, image:BitmapData, ?whenDone:Bool->Void):Void {
+		if (type == "png") {
+			if (path.substr(path.length - 4).toLowerCase() != ".png")
+				path += ".png";
+		}
+		else if (type == "jpg") {
+			if (path.substr(path.length - 4).toLowerCase() != ".jpg"
+			 && path.substr(path.length - 5).toLowerCase() != ".jpeg")
+				path += ".jpg";
+		}
+		else {
+			trace("ERROR: Could not determine how to save image as a ." + type + " file.");
+			whenDone(false);
+			return;
+		}
+		
+		path = "/assets/data/" + path;
+		var path2:String = "";
+		var a:Array<String> = DataUtils.subfold(path);
+		var success = false;
+		
+		// Flash or HTML5: Not possible to save; error out
+		#if flash
+		trace("ERROR: File IO cannot be accessed on Flash.");
+		#elseif js
+		trace("ERROR: File IO cannot be accessed on HTML5.");
+		#else
+		
+		trace("hi0");
+		
+		// Windows, Mac, Linux, iOS, and Android: Use the "saveBytes" function with the converted file
+		#if mobile
+		if (!FileSystem.exists(SystemPath.userDirectory + "/" + a[0])) {
+			FileSystem.createDirectory(SystemPath.userDirectory + "/" + a[0]);
+		}
+		path2 = SystemPath.userDirectory + "/" + a[0] + "/" + a[1];
+
+		#else
+		if (!FileSystem.exists(FileSystem.fullPath(a[0]))) {
+			FileSystem.createDirectory(FileSystem.fullPath(a[0]));
+		}
+		path2 = FileSystem.fullPath(a[0] + "/" + a[1]);
+
+		#end
+
+		var b:ByteArray = image.encode(image.rect, type == "jpg" ? new JPEGEncoderOptions() : new PNGEncoderOptions());
+		success = saveBytes(path2, b);
+		
+		#end
+		
+		if (whenDone != null)
+			whenDone(success);
+	}
+	
+	public static function savePNG(path:String, image:BitmapData, ?whenDone:Bool->Void):Void {
+		saveImage(path, "png", image, whenDone);
+	}
+	
+	public static function saveJPG(path:String, image:BitmapData, ?whenDone:Bool->Void):Void {
+		saveImage(path, "jpg", image, whenDone);
 	}
 	
 	public static function errorify(e:Dynamic):Void {

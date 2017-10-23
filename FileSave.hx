@@ -217,8 +217,6 @@ class FileSave {
 		trace("ERROR: File IO cannot be accessed on HTML5.");
 		#else
 		
-		trace("hi0");
-		
 		// Windows, Mac, Linux, iOS, and Android: Use the "saveBytes" function with the converted file
 		#if mobile
 		if (!FileSystem.exists(SystemPath.userDirectory + "/" + a[0])) {

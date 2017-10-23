@@ -1,4 +1,4 @@
-name=External Data 3.1
+name=External Data 3.2
 description=Get, format and display data using the 'extras' folder.
 author=ETHproductions
 website=http://community.stencyl.com/index.php/topic,35620.html

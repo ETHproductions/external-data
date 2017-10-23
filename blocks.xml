@@ -207,8 +207,30 @@
 		</fields>
 	</block>
 	
+	<block	tag="data-save-success-red"
+		spec="save successful [i:save]"
+		code="success"
+		help="Use inside the save text block."
+		type="normal"
+		color="red"
+		hidden="true"
+		returns="boolean">
+		<fields/>
+	</block>
+	
+	<block	tag="data-save-success-cyan"
+		spec="save successful [i:save]"
+		code="success"
+		help="Use inside the save image block."
+		type="normal"
+		color="cyan"
+		hidden="true"
+		returns="boolean">
+		<fields/>
+	</block>
+	
 	<block	tag="save-text-data"
-		spec="save data %1 to file: %0"
+		spec="save data %1 to file: %0 [e:dash] %3"
 		code="FileSave.saveText(~, ~, function(success:Bool) {~});"
 		help="DOES NOT WORK ON FLASH. // Saves a text file to the game's 'extras' folder."
 		type="wrapper"
@@ -218,21 +240,12 @@
 			<text order="0"/>
 			<text order="1"/>
 			<CODE_BLOCK order="2"/>
+			<attached-block order="3" tag="data-save-success-red"/>
 		</fields>
 	</block>
 	
-	<block	tag="data-save-success-red"
-		spec="save successful [i:save]"
-		code="success"
-		help="Use inside the save text block."
-		type="normal"
-		color="red"
-		returns="boolean">
-		<fields/>
-	</block>
-	
 	<block	tag="save-image-data"
-		spec="save PNG %1 to file: %0"
+		spec="save PNG %1 to file: %0 [e:dash] %3"
 		code="FileSave.savePNG(~, ~, function(success:Bool) {~});"
 		help="DOES NOT WORK ON FLASH. // Saves an image file as a .png to the game's 'extras' folder."
 		type="wrapper"
@@ -242,16 +255,7 @@
 			<text order="0"/>
 			<image order="1"/>
 			<CODE_BLOCK order="2"/>
+			<attached-block order="3" tag="data-save-success-cyan"/>
 		</fields>
-	</block>
-	
-	<block	tag="data-save-success-cyan"
-		spec="save successful [i:save]"
-		code="success"
-		help="Use inside the save image block."
-		type="normal"
-		color="cyan"
-		returns="boolean">
-		<fields/>
 	</block>
 </palette>

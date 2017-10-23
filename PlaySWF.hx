@@ -104,4 +104,4 @@ class PlaySWF {
 	}
 	
 	#end
-}
+}

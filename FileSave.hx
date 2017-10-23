@@ -7,7 +7,7 @@ import com.stencyl.utils.Utils;
 
 import nme.display.BitmapData;
 import nme.utils.ByteArray;
-import lime.system.System in SystemPath;
+import lime.system.System.userDirectory;
 import haxe.io.Bytes;
 import openfl.geom.Rectangle;
 import openfl.display.*;
@@ -31,7 +31,7 @@ class FileSave {
 		
 		// iOS or Android: Attempt to get text from the external directory, then the internal directory
 		#elseif mobile
-		path2 = SystemPath.userDirectory + "/" + path;
+		path2 = userDirectory + "/" + path;
 		
 		if (FileSystem.exists(path2)) {
 			content = File.getContent(path2);
@@ -68,7 +68,7 @@ class FileSave {
 		
 		// iOS or Android: Attempt to get image from the external directory, then the internal directory
 		#elseif mobile
-		path2 = SystemPath.userDirectory + "/" + path;
+		path2 = userDirectory + "/" + path;
 		if (FileSystem.exists(path2)) {
 			image = BitmapData.fromBytes(File.getBytes(path2));
 		} else {
@@ -113,11 +113,11 @@ class FileSave {
 		
 		// iOS and Android: Attempt to save to the storage directory
 		#elseif mobile
-		if (!FileSystem.exists(SystemPath.userDirectory + "/" + a[0])) {
-			FileSystem.createDirectory(SystemPath.userDirectory + "/" + a[0]);
+		if (!FileSystem.exists(userDirectory + "/" + a[0])) {
+			FileSystem.createDirectory(userDirectory + "/" + a[0]);
 		}
 		
-		path2 = SystemPath.userDirectory + "/" + a[0] + "/" + a[1];
+		path2 = userDirectory + "/" + a[0] + "/" + a[1];
 		try {
 			File.saveContent(path2, Std.string(content));
 		} catch (e:Dynamic) {
@@ -219,10 +219,10 @@ class FileSave {
 		
 		// Windows, Mac, Linux, iOS, and Android: Use the "saveBytes" function with the converted file
 		#if mobile
-		if (!FileSystem.exists(SystemPath.userDirectory + "/" + a[0])) {
-			FileSystem.createDirectory(SystemPath.userDirectory + "/" + a[0]);
+		if (!FileSystem.exists(userDirectory + "/" + a[0])) {
+			FileSystem.createDirectory(userDirectory + "/" + a[0]);
 		}
-		path2 = SystemPath.userDirectory + "/" + a[0] + "/" + a[1];
+		path2 = userDirectory + "/" + a[0] + "/" + a[1];
 
 		#else
 		if (!FileSystem.exists(FileSystem.fullPath(a[0]))) {

@@ -18,14 +18,16 @@ class FileSave {
 		var content:String = "";
 		var path2:String = "";
 		
-		// Flash: This should not happen; error out
+		// Flash or HTML5: This should not happen; error out
 		#if flash
-		trace("ERROR: File IO cannot be accessed on Flash");
+		trace("ERROR: File IO cannot be accessed on Flash.");
+		#elseif js
+		trace("ERROR: File IO cannot be accessed on HTML5.");
 		
 		// iOS or Android: Attempt to get text from the external directory, then the internal directory
 		#elseif mobile
 		path2 = SystemPath.userDirectory + "/" + path;
-		content = path2;
+		
 		if (FileSystem.exists(path2)) {
 			content = File.getContent(path2);
 		} else {
@@ -53,9 +55,11 @@ class FileSave {
 		var image:BitmapData = new BitmapData(1,1);
 		var path2:String = "";
 		
-		// Flash: This should not happen; error out
+		// Flash or HTML5: This should not happen; error out
 		#if flash
-		trace("ERROR: File IO cannot be accessed on Flash");
+		trace("ERROR: File IO cannot be accessed on Flash.");
+		#elseif js
+		trace("ERROR: File IO cannot be accessed on HTML5.");
 		
 		// iOS or Android: Attempt to get image from the external directory, then the internal directory
 		#elseif mobile
@@ -93,10 +97,14 @@ class FileSave {
 		path = "/assets/data/" + path;
 		var a:Array<String> = DataUtils.subfold(path);
 		
-		// Flash: Not possible to save; error out
-		#if flash
+		// Flash or HTML5: Not possible to save; error out
+		#if (flash || js)
 		success = false;
+		#if flash
 		trace("ERROR: File IO cannot be accessed on Flash.");
+		#else
+		trace("ERROR: File IO cannot be accessed on HTML5.");
+		#end
 		
 		// iOS and Android: Attempt to save to the storage directory
 		#elseif mobile
@@ -139,8 +147,12 @@ class FileSave {
 		if (path.substr(path.length - 4).toLowerCase() != ".png") { path += ".png"; }
 		
 		// Flash: Not possible to save; error out
+		#if (flash || js)
 		#if flash
 		trace("ERROR: File IO cannot be accessed on Flash.");
+		#else
+		trace("ERROR: File IO cannot be accessed on HTML5.");
+		#end
 		if (whenDone != null)
 			whenDone(false);
 		

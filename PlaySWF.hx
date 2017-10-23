@@ -1,9 +1,9 @@
 import String;
 import haxe.Timer;
 import com.stencyl.Engine;
-import nme.display.Loader;
-import nme.display.MovieClip;
-import nme.events.Event;
+import openfl.display.Loader;
+import openfl.display.MovieClip;
+import openfl.events.Event;
 import flash.display.AVM1Movie;
 
 class PlaySWF {
@@ -21,7 +21,7 @@ class PlaySWF {
 		} else {
 			SWF = "assets/data/" + filename + ".swf";
 		}
-		var bytes = nme.Assets.getBytes(SWF);
+		var bytes = openfl.Assets.getBytes(SWF);
 		if (bytes == null) {
 			trace("SWF with name: " + filename + " does not exist!");
 			return;
@@ -64,7 +64,7 @@ class PlaySWF {
 		} else {
 			SWF = "assets/data/" + filename + ".swf";
 		}
-		var bytes = nme.Assets.getBytes(SWF);
+		var bytes = openfl.Assets.getBytes(SWF);
 		if (bytes == null) {
 			trace("SWF with name: " + filename + " does not exist!");
 			return;

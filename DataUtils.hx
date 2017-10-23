@@ -7,21 +7,21 @@ class DataUtils {
 
 	public static function getTextData(file:String):String {
 		file = "assets/data/" + file;
-		#if flash
+		#if (flash || js)
 		var text:String = nme.Assets.getText(file);
 		#else
 		var text:String = FileSave.getText(file);
 		#end
 		if (text == null) text = "";						// if something goes wrong, return blank text
-		text = StringTools.replace(text, "\r\n", "\n\r");	// swapping double line breaks (such as used by Notepad)
-		text = StringTools.replace(text, "\n\r", "\r");		// replacing all double breaks with single breaks
-		text = StringTools.replace(text, "\n", "\r");		// making all line breaks the same type
+		text = StringTools.replace(text, "\r\n", "\n\r");	// swap double line breaks (Windows-style line breaks)
+		text = StringTools.replace(text, "\n\r", "\r");		// replace all double breaks with single breaks
+		text = StringTools.replace(text, "\n", "\r");		// make all line breaks the same type
 		return text;
 	}
 	
 	public static function getImageData(file:String):BitmapData {
 		file = "assets/data/" + file;
-		#if flash
+		#if (flash || js)
 		var image:BitmapData = nme.Assets.getBitmapData(file);
 		#else
 		var image:BitmapData = FileSave.getImage(file);
@@ -30,7 +30,7 @@ class DataUtils {
 		return image;
 	}
 	
-	/* Takes a filename, gets rid of all illegal characters, and splits into a path and a filename. */
+	/* Takes a file path, gets rid of all illegal characters, and splits into a path and a filename. */
 	public static function subfold(file:String):Array<String> {
 		for (a in [':','*','?','"','<','>','|'])
 			file = StringTools.replace(file, a, "");	// remove all illegal characters from path/filename
@@ -48,6 +48,8 @@ class DataUtils {
 	public static function appendLine(path:String, content:String):Void {
 		#if flash
 		trace("ERROR: File IO cannot be accessed on Flash.");
+		#elseif js
+		trace("ERROR: File IO cannot be accessed on HTML5.");
 		#else
 		var file = getTextData(path) + "\r" + content;
 		FileSave.saveText(path, file, null);
@@ -70,9 +72,9 @@ class DataUtils {
 	public static function removeSpecial(text:String, char:Int):String {
 		var special:String = "";
 		if (char == 0) {
-			special = "\\n";
+			special = "\n";
 		} else if (char == 1) {
-			special = "\\u09";
+			special = "\u0009";
 		}
 		return "abc" + special + "def";
 	}

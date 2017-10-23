@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<palette>
+	<block	tag="get-text-data"
+		spec="text from file: %0"
+		code="DataUtils.getTextData(~)"
+		help="Gets text from a file in your game's 'extras' folder. For more info, right-click and press 'View Help'."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+
+	<block	tag="split-text-lines"
+		spec="split %0 into lines"
+		code="~.split(&quot;\r&quot;)"
+		help="Splits a multi-line text file into a list."
+		type="normal"
+		color="lime"
+		returns="list">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+	
+	<block	tag="line-break"
+		spec="line break"
+		code="&quot;\r&quot;"
+		help="Returns a line break as text."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields/>
+	</block>
+	
+	<block	tag="text-with-breaks"
+		spec="replace \r with line break in %0"
+		code="StringTools.replace(~, &quot;\\r&quot;, &quot;\r&quot;)"
+		help="Replaces any instances of \r in the text with a line break. Useful for adding multiple lines."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+	
+	<block	tag="text-without-breaks"
+		spec="replace line break with \r in %0"
+		code="StringTools.replace(~, &quot;\r&quot;, &quot;\\r&quot;)"
+		help="Replaces any line breaks in the text with \r. Useful for debugging purposes."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+	
+	<block	tag="remove-breaks"
+		spec="remove line breaks from %0"
+		code="StringTools.replace(~, &quot;\r&quot;, &quot;&quot;)"
+		help="Removes any line breaks from the text."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+	
+	<block	tag="add-line-break"
+		spec="add line: %1 to %0"
+		code="~ += &quot;\r&quot; + ~;"
+		help="Adds a line of text to the text attribute."
+		type="action"
+		color="lime"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<text order="1"/>
+		</fields>
+	</block>
+	
+	<block	tag="append-line"
+		spec="append line %1 to file: %0"
+		code="DataUtils.appendLine(~, ~);"
+		help="DOES NOT WORK ON FLASH. // Adds a line of text to the end of the file. Useful for generating logs."
+		type="action"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<text order="1"/>
+		</fields>
+	</block>
+	
+	<block	tag="unicode-text"
+		spec="unicode text: %0"
+		code="&quot;~&quot;"
+		help="Returns the text with Unicode characters preserved."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<camera order="0"/>
+		</fields>
+	</block>
+
+<!-- EXPERIMENTAL
+	<block	tag="remove-char"
+		spec="remove all %1 from %0"
+		code="DataUtils.removeSpecial(~, ~)"
+		help="Removes every instance of the special character from the text."
+		type="normal"
+		color="lime"
+		returns="text">
+		<fields>
+			<text order="0"/>
+			<dropdown order="1">
+				<choices>
+					<c text="line breaks" code="0"/>
+					<c text="tabs" code="1"/>
+				</choices>				
+			</dropdown>
+		</fields>
+	</block> -->
+
+	<block	tag="draw-list"
+		spec="draw list %0 at ( x: %1 y: %2 )"
+		code="DataUtils.drawList(g, ~, ~, ~);"
+		help="Draws a list onto the screen, item by item. Use only in drawing events."
+		type="action"
+		color="cyan"
+		returns="void">
+		<fields>
+			<list order="0"/>
+			<number order="1"/>
+			<number order="2"/>
+		</fields>
+	</block>
+	
+	<block	tag="print-list"
+		spec="print list %0"
+		code="for (item in ~) trace(item);"
+		help="Prints a list to the console, item by item."
+		type="action"
+		color="gray"
+		returns="void">
+		<fields>
+			<list order="0"/>
+		</fields>
+	</block>
+
+	<block	tag="get-sound-data"
+		spec="sound from file: %0"
+		code="DataUtils.getSoundData(~)"
+		help="Gets a sound from a file in the game's 'extras' folder. DO NOT include the file extension (.mp3 or .ogg). For more info, right-click and press 'View Help'."
+		type="normal"
+		color="red"
+		returns="sound">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+	
+	<block	tag="image-file"
+		spec="image from file: %0 [i:draw]"
+		code="DataUtils.getImageData(~)"
+		help="Gets a image from a file in the game's 'extras' folder. For more info, right-click and press 'View Help'."
+		type="normal"
+		color="cyan"
+		returns="image">
+		<fields>
+			<text order="0"/>
+		</fields>
+	</block>
+
+	<block	tag="play-swf-data"
+		spec="play [i:flash] swf from file: %0 at ( x: %1 y: %2 ) [e:dash] when done..."
+		code="PlaySWF.playSWF(~, ~, ~, function() {~});"
+		help="ONLY WORKS ON FLASH. // Plays an SWF file (.swf) from your game's 'extras' folder. For more info, right-click and press 'View Help'."
+		type="wrapper"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<number order="1"/>
+			<number order="2"/>
+			<CODE_BLOCK order="3"/>
+		</fields>
+	</block>
+
+	<block	tag="play-avm1-data"
+		spec="play [i:flash] avm1 from file: %0 for %1 seconds [e:dash] when done..."
+		code="PlaySWF.playAVM1(~, 1000 * ~, function() {~});"
+		help="ONLY WORKS ON FLASH. // Plays an AVM1 SWF file (.swf) from the game's 'extras' folder. For more info, right-click and press 'View Help'."
+		type="wrapper"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<number order="1"/>
+			<CODE_BLOCK order="2"/>
+		</fields>
+	</block>
+	
+	<block	tag="save-text-data"
+		spec="save data %1 to file: %0"
+		code="FileSave.saveText(~, ~, function(success:Bool) {~});"
+		help="DOES NOT WORK ON FLASH. // Saves a text file to the game's 'extras' folder."
+		type="wrapper"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<text order="1"/>
+			<CODE_BLOCK order="2"/>
+		</fields>
+	</block>
+	
+	<block	tag="data-save-success-red"
+		spec="save successful [i:save]"
+		code="success"
+		help="Use inside the save text block."
+		type="normal"
+		color="red"
+		returns="boolean">
+		<fields/>
+	</block>
+	
+	<block	tag="save-image-data"
+		spec="save PNG %1 to file: %0"
+		code="FileSave.savePNG(~, ~, function(success:Bool) {~});"
+		help="DOES NOT WORK ON FLASH. // Saves an image file as a .png to the game's 'extras' folder."
+		type="wrapper"
+		color="cyan"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<image order="1"/>
+			<CODE_BLOCK order="2"/>
+		</fields>
+	</block>
+	
+	<block	tag="data-save-success-cyan"
+		spec="save successful [i:save]"
+		code="success"
+		help="Use inside the save image block."
+		type="normal"
+		color="cyan"
+		returns="boolean">
+		<fields/>
+	</block>
+</palette>

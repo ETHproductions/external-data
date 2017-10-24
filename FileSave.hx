@@ -7,14 +7,24 @@ import com.stencyl.utils.Utils;
 
 import nme.display.BitmapData;
 import nme.utils.ByteArray;
-import lime.system.System.userDirectory;
 import haxe.io.Bytes;
+import openfl.Assets;
+
+#if (openfl >= "4.0.0")
 import openfl.geom.Rectangle;
 import openfl.display.*;
+#end
 
 #if !flash
 import sys.*;
 import sys.io.*;
+
+#if (openfl >= "4.0.0")
+import lime.system.System.userDirectory;
+#else
+import nme.utils.SystemPath.userDirectory;
+#end
+
 #end
 
 class FileSave {
@@ -70,7 +80,11 @@ class FileSave {
 		#elseif mobile
 		path2 = userDirectory + "/" + path;
 		if (FileSystem.exists(path2)) {
+			#if (openfl >= "4.0.0")
 			image = BitmapData.fromBytes(File.getBytes(path2));
+			#else
+			image = BitmapData.loadFromHaxeBytes(File.getBytes(path2));
+			#end
 		} else {
 			image = nme.Assets.getBitmapData(path);
 		}
@@ -83,7 +97,11 @@ class FileSave {
 		#else
 		path2 = FileSystem.fullPath(path);
 		if (FileSystem.exists(path2)) {
+			#if (openfl >= "4.0.0")
 			image = BitmapData.fromBytes(File.getBytes(path2));
+			#else
+			image = BitmapData.loadFromHaxeBytes(File.getBytes(path2));
+			#end
 		} else {
 			trace("ERROR: File does not exist at: " + path2);
 		}
@@ -190,17 +208,9 @@ class FileSave {
 	}
 	
 	public static function saveImage(path:String, type:String, image:BitmapData, ?whenDone:Bool->Void):Void {
-		if (type == "png") {
-			if (path.substr(path.length - 4).toLowerCase() != ".png")
-				path += ".png";
-		}
-		else if (type == "jpg") {
-			if (path.substr(path.length - 4).toLowerCase() != ".jpg"
-			 && path.substr(path.length - 5).toLowerCase() != ".jpeg")
-				path += ".jpg";
-		}
-		else {
-			trace("ERROR: Could not determine how to save image as a ." + type + " file.");
+		// Should not happen, but we'd better handle it anyway
+		if (type != "png" && type != "jpg") {
+			trace("ERROR: Could not determine how to save image as a " + type + " file.");
 			whenDone(false);
 			return;
 		}
@@ -231,8 +241,13 @@ class FileSave {
 		path2 = FileSystem.fullPath(a[0] + "/" + a[1]);
 
 		#end
-
+		
+		#if (openfl >= "4.0.0")
 		var b:ByteArray = image.encode(image.rect, type == "jpg" ? new JPEGEncoderOptions() : new PNGEncoderOptions());
+		#else
+		var b:ByteArray = image.encode(type, 1);
+		#end
+		
 		success = saveBytes(path2, b);
 		
 		#end
@@ -242,10 +257,15 @@ class FileSave {
 	}
 	
 	public static function savePNG(path:String, image:BitmapData, ?whenDone:Bool->Void):Void {
+		if (path.substr(path.length - 4).toLowerCase() != ".png")
+			path += ".png";
 		saveImage(path, "png", image, whenDone);
 	}
 	
 	public static function saveJPG(path:String, image:BitmapData, ?whenDone:Bool->Void):Void {
+		if (path.substr(path.length - 4).toLowerCase() != ".jpg" &&
+		    path.substr(path.length - 5).toLowerCase() != ".jpeg")
+			path += ".jpg";
 		saveImage(path, "jpg", image, whenDone);
 	}
 	

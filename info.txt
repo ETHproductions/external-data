@@ -1,6 +1,6 @@
-name=External Data 3.3
+name=External Data
 description=Get, format and display data using the 'extras' folder.
 author=ETHproductions
 website=http://community.stencyl.com/index.php/topic,35620.html
-version=1.6
+version=2.0
 compatibility=all

@@ -74,7 +74,7 @@ class DataUtils {
 		if (char == 0) {
 			special = "\n";
 		} else if (char == 1) {
-			special = "\u0009";
+			special = "\t";
 		}
 		return "abc" + special + "def";
 	}

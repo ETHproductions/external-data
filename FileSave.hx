@@ -20,9 +20,9 @@ import sys.*;
 import sys.io.*;
 
 #if (openfl >= "4.0.0")
-import lime.system.System.userDirectory;
+import lime.system.System.*;
 #else
-import nme.utils.SystemPath.userDirectory;
+import nme.utils.SystemPath.*;
 #end
 
 #end

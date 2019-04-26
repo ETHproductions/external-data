@@ -184,6 +184,7 @@
 		help="ONLY WORKS ON FLASH. // Plays an SWF file (.swf) from your game's 'extras' folder. For more info, right-click and press 'View Help'."
 		type="wrapper"
 		color="red"
+		hidden="true"
 		returns="void">
 		<fields>
 			<text order="0"/>
@@ -199,11 +200,28 @@
 		help="ONLY WORKS ON FLASH. // Plays an AVM1 SWF file (.swf) from the game's 'extras' folder. For more info, right-click and press 'View Help'."
 		type="wrapper"
 		color="red"
+		hidden="true"
 		returns="void">
 		<fields>
 			<text order="0"/>
 			<number order="1"/>
 			<CODE_BLOCK order="2"/>
+		</fields>
+	</block>
+	
+	<block	tag="play-movie-data"
+		spec="play [i:flash] from file: %0 at ( x: %1 y: %2 ) for %3 seconds [e:dash] when done..."
+		code="PlaySWF.playMovie(~, ~, ~, 1000 * ~, function() {~});"
+		help="ONLY WORKS ON FLASH. // Plays an .swf file from the game's 'extras' folder. For more info, right-click and press 'View Help'."
+		type="wrapper"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
+			<number order="1"/>
+			<number order="2"/>
+			<number order="3"/>
+			<CODE_BLOCK order="4"/>
 		</fields>
 	</block>
 	

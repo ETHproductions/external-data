@@ -209,9 +209,20 @@
 		</fields>
 	</block>
 	
+	<block	tag="movie-data-loaded"
+		spec="swf loaded [i:flash]"
+		code="loaded"
+		help="Use inside the play swf block."
+		type="normal"
+		color="red"
+		hidden="true"
+		returns="boolean">
+		<fields/>
+	</block>
+	
 	<block	tag="play-movie-data"
-		spec="play [i:flash] from file: %0 at ( x: %1 y: %2 ) for %3 seconds [e:dash] when done..."
-		code="PlaySWF.playMovie(~, ~, ~, 1000 * ~, function() {~});"
+		spec="play [i:flash] from file: %0 at ( x: %1 y: %2 ) [e:dash] %4"
+		code="PlaySWF.playMovie(~, ~, ~, function(loaded) {~});"
 		help="ONLY WORKS ON FLASH. // Plays an .swf file from the game's 'extras' folder. For more info, right-click and press 'View Help'."
 		type="wrapper"
 		color="red"
@@ -220,8 +231,20 @@
 			<text order="0"/>
 			<number order="1"/>
 			<number order="2"/>
-			<number order="3"/>
-			<CODE_BLOCK order="4"/>
+			<CODE_BLOCK order="3"/>
+			<attached-block order="4" tag="movie-data-loaded"/>
+		</fields>
+	</block>
+	
+	<block	tag="stop-movie-data"
+		spec="close [i:flash] movie from file: %0"
+		code="PlaySWF.stopMovie(~);"
+		help="ONLY WORKS ON FLASH. // Stops and closes the .swf file if it's currently running. For more info, right-click and press 'View Help'."
+		type="action"
+		color="red"
+		returns="void">
+		<fields>
+			<text order="0"/>
 		</fields>
 	</block>
 	

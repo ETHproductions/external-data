@@ -92,7 +92,7 @@ class DataUtils {
 	} 
 
 	public static function soundToStencyl(sound:flash.media.Sound, filename:String, ext:String):com.stencyl.models.Sound {
-		var stencylSound = new com.stencyl.models.Sound(-1, filename, true, false, 0.0, 1.0, ext);
+		var stencylSound = new com.stencyl.models.Sound(-1, filename, true, false, 0.0, 1.0, ext #if (stencyl >= "4.0.0"), -1 #end);
 		stencylSound.streaming = false;
 		stencylSound.src = sound;
 		return stencylSound;

@@ -3,12 +3,13 @@ import com.stencyl.behavior.Script;
 import com.stencyl.behavior.TimedTask;
 import com.stencyl.models.Font;
 import com.stencyl.graphics.G;
+import com.stencyl.utils.Assets;
 import com.stencyl.utils.Utils;
 
-import nme.display.BitmapData;
-import nme.utils.ByteArray;
 import haxe.io.Bytes;
-import openfl.Assets;
+
+import openfl.display.BitmapData;
+import openfl.utils.ByteArray;
 
 #if (openfl >= "4.0.0")
 import openfl.geom.Rectangle;
@@ -22,7 +23,7 @@ import sys.io.*;
 #if (openfl >= "4.0.0")
 import lime.system.System.*;
 #else
-import nme.utils.SystemPath.*;
+import openfl.utils.SystemPath.*;
 #end
 
 #end
@@ -46,7 +47,7 @@ class FileSave {
 		if (FileSystem.exists(path2)) {
 			content = File.getContent(path2);
 		} else {
-			content = nme.Assets.getText(path);
+			content = Assets.getText(path);
 			if (content == null) {
 				trace("ERROR: File does not exist at: " + path);
 				content = "";
@@ -86,7 +87,7 @@ class FileSave {
 			image = BitmapData.loadFromHaxeBytes(File.getBytes(path2));
 			#end
 		} else {
-			image = nme.Assets.getBitmapData(path);
+			image = Assets.getBitmapData(path);
 		}
 		if (image == null) {
 			trace("ERROR: File does not exist at: " + path);

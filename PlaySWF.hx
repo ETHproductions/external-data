@@ -1,10 +1,16 @@
 import haxe.Timer;
+
 import com.stencyl.Engine;
+import com.stencyl.utils.Assets;
+
 import openfl.display.Loader;
 import openfl.display.MovieClip;
 import openfl.events.Event;
 import openfl.utils.ByteArray;
+
+#if flash
 import flash.display.AVM1Movie;
+#end
 
 class PlaySWF {
 	
@@ -33,7 +39,7 @@ class PlaySWF {
 		filepath = "assets/data/" + filename;
 		
 		try {
-			bytes = openfl.Assets.getBytes(filepath);
+			bytes = Assets.getBytes(filepath);
 		} catch (e:Dynamic) {
 			trace("Could not find " + filename);
 			whenLoaded(false);

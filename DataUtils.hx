@@ -1,14 +1,16 @@
 import com.stencyl.graphics.G;
 import com.stencyl.Engine;
 import com.stencyl.models.Sound;
-import nme.display.BitmapData;
+import com.stencyl.utils.Assets;
+
+import openfl.display.BitmapData;
 
 class DataUtils {
 
 	public static function getTextData(file:String):String {
 		file = "assets/data/" + file;
 		#if (flash || js)
-		var text:String = nme.Assets.getText(file);
+		var text:String = Assets.getText(file);
 		#else
 		var text:String = FileSave.getText(file);
 		#end
@@ -22,7 +24,7 @@ class DataUtils {
 	public static function getImageData(file:String):BitmapData {
 		file = "assets/data/" + file;
 		#if (flash || js)
-		var image:BitmapData = nme.Assets.getBitmapData(file);
+		var image:BitmapData = Assets.getBitmapData(file);
 		#else
 		var image:BitmapData = FileSave.getImage(file);
 		#end
@@ -87,11 +89,11 @@ class DataUtils {
 		ext = ".mp3";
 		#end
 		var file:String = "assets/data/" + filename + ext;
-		var nmeSound:flash.media.Sound = nme.Assets.getSound(file);
-		return soundToStencyl(nmeSound, filename, ext);
+		var openflSound:openfl.media.Sound = Assets.getSound(file);
+		return soundToStencyl(openflSound, filename, ext);
 	} 
 
-	public static function soundToStencyl(sound:flash.media.Sound, filename:String, ext:String):com.stencyl.models.Sound {
+	public static function soundToStencyl(sound:openfl.media.Sound, filename:String, ext:String):com.stencyl.models.Sound {
 		var stencylSound = new com.stencyl.models.Sound(-1, filename, true, false, 0.0, 1.0, ext #if (stencyl >= "4.0.0"), -1 #end);
 		stencylSound.streaming = false;
 		stencylSound.src = sound;
